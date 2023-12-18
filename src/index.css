@@ -12,3 +12,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.gloweffect:hover {
+  box-shadow: 0 0 42px 16px #7f5af0;
+}
