@@ -1,18 +1,32 @@
 import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import useLogging from "../hooks/useLogging";
-import { type User } from "./Posts";
+import type { User, Post } from "./Posts";
+
+type Comment = {
+  body: string;
+  email: string;
+  id: number;
+  name: string;
+  postId: number;
+};
 
 type LoaderData = {
-  post: { body: string; id: number; title: string; userId: number };
-  comments: {
-    body: string;
-    email: string;
-    id: number;
-    name: string;
-    postId: number;
-  }[];
+  post: Post;
+  comments: Comment[];
 };
+
+function Comment({ message, comment }: { message: string; comment: Comment }) {
+  useLogging(message, "Comment");
+  return (
+    <div className="flex flex-col items-center">
+      <p style={{ color: "#c4b5fd" }}>{comment.email}</p>
+      <p style={{ color: "#72757e" }}>{comment.name}</p>
+      <p style={{ color: "#fffffe" }}>{comment.body}</p>
+      <hr />
+    </div>
+  );
+}
 
 function Post({ message }: { message: string }) {
   useLogging(message, "Post");
@@ -22,7 +36,7 @@ function Post({ message }: { message: string }) {
   useEffect(() => {
     (async () => {
       const userRes = await fetch(
-        `https://jsonplaceholder.typicode.com/users/${post?.userId}`,
+        `https://jsonplaceholder.typicode.com/users/${post?.userId}`
       );
       const user = await userRes.json();
       setPostUser(user);
@@ -50,12 +64,7 @@ function Post({ message }: { message: string }) {
         </section>
         <section className="comments-wrapper">
           {comments?.map((comment) => (
-            <div key={comment.id} className="flex flex-col items-center">
-              <p style={{ color: "#c4b5fd" }}>{comment.email}</p>
-              <p style={{ color: "#72757e" }}>{comment.name}</p>
-              <p style={{ color: "#fffffe" }}>{comment.body}</p>
-              <hr />
-            </div>
+            <Comment message="Hello from:" comment={comment} key={comment.id} />
           ))}
         </section>
       </section>
