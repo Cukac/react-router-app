@@ -22,12 +22,27 @@ const router = createBrowserRouter([
     element: <Posts message="Hello from:" />,
   },
   {
+    path: "/posts",
+    loader: async () => {
+      const [postsResponse, usersResponse] = await Promise.all([
+        fetch(`https://jsonplaceholder.typicode.com/posts`),
+        fetch(`https://jsonplaceholder.typicode.com/users`),
+      ]);
+      const [posts, users] = await Promise.all([
+        postsResponse.json(),
+        usersResponse.json(),
+      ]);
+      return { posts, users };
+    },
+    element: <Posts message="Hello from:" />,
+  },
+  {
     path: "/post/:id",
     loader: async ({ params }) => {
       const [postResponse, commentsResponse] = await Promise.all([
         fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}`),
         fetch(
-          `https://jsonplaceholder.typicode.com/posts/${params.id}/comments`,
+          `https://jsonplaceholder.typicode.com/posts/${params.id}/comments`
         ),
       ]);
       const [post, comments] = await Promise.all([
@@ -43,5 +58,5 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
