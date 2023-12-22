@@ -19,7 +19,7 @@ const router = createBrowserRouter([
       ]);
       return { posts, users };
     },
-    element: <Posts />,
+    element: <Posts message="Hello from:" />,
   },
   {
     path: "/post/:id",
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
       ]);
       return { post, comments };
     },
-    element: <Post />,
+    element: <Post message="Hello from:" />,
   },
 ]);
 

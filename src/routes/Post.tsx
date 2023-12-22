@@ -1,4 +1,5 @@
 import { useLoaderData } from "react-router-dom";
+import useLogging from "../hooks/useLogging";
 
 type LoaderData = {
   post: { body: string; id: number; title: string; userId: number };
@@ -11,7 +12,8 @@ type LoaderData = {
   }[];
 };
 
-function Post() {
+function Post({ message }: { message: string }) {
+  useLogging(message, "Post");
   const { post, comments } = useLoaderData() as LoaderData;
 
   console.log("post", post, "comments", comments);
